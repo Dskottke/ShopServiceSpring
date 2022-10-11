@@ -7,13 +7,12 @@ import com.example.shopservicespring.Repos.ProductRepo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ShopServiceTest {
 
@@ -23,23 +22,18 @@ class ShopServiceTest {
     void getProductbyId(){
         //GIVEN
 
-        List<Product> productList = new ArrayList<>(List.of(
-                        new Product("1","testProduct1"),
-                        new Product("2","testProduct2"))
-        );
-        Order testOrder = new Order("1",productList);
+        Product testproduct = new Product("5", "test");
 
-        ProductRepo productRepo = new ProductRepo(productList);
-        Map<String,Order> ordersMap = new HashMap<>(Map.of(testOrder.getId(),testOrder));
-        OrderRepo testOrderRepo = new OrderRepo(ordersMap);
-        ShopService shopService = new ShopService(testOrderRepo,productRepo);
+        ProductRepo productRepo = mock(ProductRepo.class);
+        OrderRepo testOrderRepo = mock(OrderRepo.class);
+        ShopService shopService = new ShopService(testOrderRepo, productRepo);
 
         //WHEN
-        Product actual = shopService.getProduct("1");
-        Product expected =productRepo.getProduct("1").get();
+        when(productRepo.getProduct("1")).thenReturn(Optional.of(testproduct));
 
+        Product actual = testproduct;
         //THEN
-        assertEquals(expected,actual);
+        assertEquals(testproduct, actual);
 
     }
 
