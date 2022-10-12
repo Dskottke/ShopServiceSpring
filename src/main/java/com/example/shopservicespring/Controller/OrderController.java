@@ -21,12 +21,12 @@ public class OrderController {
 
     @GetMapping
     public List<Order> getOrders() {
-        return shopService.listOrder();
+        return shopService.listOrders();
     }
 
     @GetMapping("{id}")
     public Order getOrderBy(@PathVariable String id) {
-        return shopService.getOrderById(id);
+        return shopService.getOrderBy(id);
     }
 
     @PostMapping

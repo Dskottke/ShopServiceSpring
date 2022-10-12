@@ -1,27 +1,24 @@
 package com.example.shopservicespring.Model;
 
-import lombok.Data;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 import java.util.Objects;
 
-@Data
 public class Product {
-    //DECLARATION
-    private String id;
-    private String name;
-
-    //CONSTRUCTOR
-    public Product() {
-    }
+    private final String id;
+    private final String name;
 
     public Product(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    //METHODS
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,6 +32,11 @@ public class Product {
         return Objects.hash(id, name);
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

@@ -2,7 +2,6 @@ package com.example.shopservicespring.Controller;
 
 import com.example.shopservicespring.Model.Product;
 import com.example.shopservicespring.Shop.ShopService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +29,6 @@ public class ProductController {
 
     @GetMapping("{id}")
     public Product getProductBy(@PathVariable String id) {
-        return shopService.getProduct(id);
+        return shopService.getProductBy(id);
     }
 }

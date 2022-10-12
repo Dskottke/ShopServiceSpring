@@ -23,6 +23,7 @@ class OrderIntegrationsTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+
     @Test
     @DirtiesContext
     void getOrdersWithEmptyList() throws Exception {
@@ -64,6 +65,55 @@ class OrderIntegrationsTest {
                 .andExpect(content().json(expected));
     }
 
+    @Test
+    @DirtiesContext
+    void deleteOrdersWithOneElement() throws Exception {
+        //GIVEN
+        mockMvc.perform(MockMvcRequestBuilders.post("/order")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content("""
+                                []
+                                """))
+                .andExpect(status().isOk());
 
 
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/order"))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
+
+        //WHEN
+        String expected ="[]";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/order"))
+
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().json(expected));
+    }
+
+    @Test
+    @DirtiesContext
+    void AddOneOrderWithoutAExistingOrder() throws Exception {
+    //GIVEN
+
+
+    // WHEN
+
+    mockMvc.perform(MockMvcRequestBuilders.post("/order")
+                      .contentType(MediaType.APPLICATION_JSON_VALUE)
+                      .content("""
+                              []
+                              """))
+                        .andExpect(status().isOk());
+    //THEN
+    mockMvc.perform(MockMvcRequestBuilders.get("/order")
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content("""
+                            []
+                            """))
+                     .andExpect(status().isOk());
+
+
+    }
 }

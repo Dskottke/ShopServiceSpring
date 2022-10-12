@@ -1,29 +1,28 @@
 package com.example.shopservicespring.Model;
 
-import lombok.Data;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Objects;
 
-@Data
-
 public class Order {
 
-    //DECLARATION
-    private String id;
-    private List<Product> products;
+private final String id;
+private List<Product> productList;
 
-    //CONSTRUCTOR
-    public Order() {
+    public Order(String id, List<Product> productList) {
+        this.id = id;
+        this.productList = productList;
     }
 
-    //METHODS
-    public Order(String id, List<Product> products) {
-        this.id = id;
-        this.products = products;
+    public String getId() {
+        return id;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> products) {
+        this.productList = products;
     }
 
     @Override
@@ -31,16 +30,19 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(id, order.id) && Objects.equals(products, order.products);
+        return Objects.equals(id, order.id) && Objects.equals(productList, order.productList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, products);
+        return Objects.hash(id, productList);
     }
 
-    public List<Product> listProducts() {
-        return products;
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id='" + id + '\'' +
+                ", productList=" + productList +
+                '}';
     }
-
 }

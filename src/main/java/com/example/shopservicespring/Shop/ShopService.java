@@ -1,78 +1,68 @@
 package com.example.shopservicespring.Shop;
 
-import org.springframework.stereotype.Service;
-
 
 import com.example.shopservicespring.Model.Order;
 import com.example.shopservicespring.Model.Product;
-import com.example.shopservicespring.Repos.OrderRepo;
-import com.example.shopservicespring.Repos.ProductRepo;
+import com.example.shopservicespring.Repos.OrderRepository;
+import com.example.shopservicespring.Repos.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 @Service
 public class ShopService {
-    //DECLARATION
-    private final OrderRepo orderRepo;
-    private final ProductRepo productRepo;
 
-    //CONSTRUCTOR
-    public ShopService(OrderRepo orderRepo, ProductRepo productRepo) {
+    private final OrderRepository orderRepo;
+    private final ProductRepository productRepository;
+
+    @Autowired
+    public ShopService(OrderRepository orderRepo, ProductRepository productRepository) {
         this.orderRepo = orderRepo;
-        this.productRepo = productRepo;
+        this.productRepository = productRepository;
     }
 
-    //METHODS
-    public Product getProduct(String id) {
-        Optional<Product> product = productRepo.getProduct(id);
+    public List<Order> listOrders(){
+        return orderRepo.listOrders();
+    }
 
-        if (product.isPresent()) {
-            return product.get();
+    public Order getOrderBy(String id) {
+        Optional<Order> optionalOrder = orderRepo.getOrderBy(id);
+        if (optionalOrder.isPresent()) {
+            return optionalOrder.get();
+        } else {
+            throw new IllegalArgumentException("Product with ID " + id + " not found");
         }
-        else throw new NoProductFoundException();
     }
 
-    public List<Product> listProduct() {
-        return productRepo.listProducts();
-    }
-
-    public Order orderProducts(List<String> productKeys) {
-
+    public Order orderProducts(List<String> productIds) {
         List<Product> productsToOrder = new ArrayList<>();
-
-        for (String key : productKeys) {
-
-            Product product = getProduct(key);
-            productsToOrder.add(product);
-
+        for (String productId : productIds) {
+            Product productToAdd = getProductBy(productId);
+            productsToOrder.add(productToAdd);
         }
+        return orderRepo.addOrder(new Order(generateId(), productsToOrder));
+    }
 
-        String id = UUID.randomUUID().toString();
+    private String generateId() {
+        return UUID.randomUUID().toString();
+    }
 
-        return orderRepo.addOrder(new Order(id, productsToOrder));
+    public void deleteOrder(String id) {
+        Order order = getOrderBy(id);
+        orderRepo.deleteOrder(order);
     }
 
     public List<Product> getProducts(){
-
-        return productRepo.getProducts();
-
-    }
-    public List<Order> getOrder(){
-        return orderRepo.listOrder();
-    }
-    public Order getOrderById(String id){
-        return orderRepo.getOrder(id);
-    }
-    public void deleteOrder(String id) {
-        Order order = getOrderById(id);
-        orderRepo.deleteOrder(order);
+        return productRepository.listProducts();
     }
 
     public List<Product> searchProducts(String name){
         List<Product> products = new ArrayList<>();
-        for (Product product :productRepo.listProducts()) {
+        for (Product product : productRepository.listProducts()) {
             if (product.getName().contains(name)) {
                 products.add(product);
             }
@@ -80,10 +70,12 @@ public class ShopService {
         return products;
     }
 
-    public List<Order> listOrder(){
-        return orderRepo.listOrder();
+    public Product getProductBy(String id){
+        Optional<Product> optionalProduct = productRepository.getProduct(id);
+        if (optionalProduct.isPresent()) {
+            return optionalProduct.get();
+        } else {
+            throw new IllegalArgumentException("Product with ID " + id + " not found");
+        }
     }
-
-
-
 }
