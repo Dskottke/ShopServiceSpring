@@ -65,6 +65,25 @@ public class ShopService {
     public Order getOrderById(String id){
         return orderRepo.getOrder(id);
     }
+    public void deleteOrder(String id) {
+        Order order = getOrderById(id);
+        orderRepo.deleteOrder(order);
+    }
+
+    public List<Product> searchProducts(String name){
+        List<Product> products = new ArrayList<>();
+        for (Product product :productRepo.listProducts()) {
+            if (product.getName().contains(name)) {
+                products.add(product);
+            }
+        }
+        return products;
+    }
+
+    public List<Order> listOrder(){
+        return orderRepo.listOrder();
+    }
+
 
 
 }

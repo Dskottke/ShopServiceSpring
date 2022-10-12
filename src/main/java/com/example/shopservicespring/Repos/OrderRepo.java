@@ -44,6 +44,12 @@ public class OrderRepo {
         return List.copyOf(orders.values());
     }
 
+    public void deleteOrder(Order order) {
+        orders.remove(order);
+    }
+
+
+
 
 
 
