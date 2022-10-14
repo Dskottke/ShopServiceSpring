@@ -1,6 +1,7 @@
 package com.example.shopservicespring.Repos;
 
 import com.example.shopservicespring.Model.Order;
+import com.example.shopservicespring.Model.OrderStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -9,7 +10,7 @@ import java.util.*;
 public class OrderRepository {
     private final List<Order> orders = new ArrayList<>();
 
-    public List<Order> listOrders(){
+    public List<Order> listOrders() {
         return orders;
     }
 
@@ -22,10 +23,12 @@ public class OrderRepository {
         return Optional.empty();
     }
 
-    public Order addOrder(Order newOrder){
+    public Order addOrder(Order newOrder) {
         orders.add(newOrder);
         return newOrder;
     }
+
+
 
     public void deleteOrder(Order order) {
         orders.remove(order);

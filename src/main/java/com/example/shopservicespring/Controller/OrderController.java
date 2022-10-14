@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("order")
+@RequestMapping("/order")
 public class OrderController {
 
     private final ShopService shopService;
@@ -38,4 +38,11 @@ public class OrderController {
     public void deleteOrder(@PathVariable String id) {
         shopService.deleteOrder(id);
     }
+    @GetMapping("order/")
+    public Order getOrderFromApiByID(@RequestParam String id){
+
+        return shopService.MakeOrderFromApiById(id);
+    }
+
+
 }

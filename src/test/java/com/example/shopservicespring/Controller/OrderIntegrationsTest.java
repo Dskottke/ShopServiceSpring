@@ -106,13 +106,6 @@ class OrderIntegrationsTest {
                               []
                               """))
                         .andExpect(status().isOk());
-    //THEN
-    mockMvc.perform(MockMvcRequestBuilders.get("/order")
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .content("""
-                            []
-                            """))
-                     .andExpect(status().isOk());
 
 
     }
